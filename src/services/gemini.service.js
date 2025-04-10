@@ -1,98 +1,129 @@
-// const { GoogleGenerativeAI } = require('@google/generative-ai');
-// const config = require('../config');
-
-// class GeminiService {
-//   constructor() {
-//     if (!config.gemini.apiKey) {
-//       throw new Error('Google Gemini API key not configured');
-//     }
-
-//     this.genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-//     this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-//   }
-
-//   async generateDevOpsResponse(prompt) {
-//     try {
-//       const isCodeRequest = /(code|example|snippet|script|template|file|create|show me|how to).*(terraform|docker|jenkins|kubernetes|ansible|puppet|chef|aws|azure|gcp|ci\/cd|pipeline|python|bash|shell)/i.test(prompt);
-
-//       const instructions = isCodeRequest
-//         ? `Provide a complete, ready-to-use code solution for: ${prompt}\n` +
-//           `- Include only the code with brief comments\n` +
-//           `- Format for direct copying/pasting\n` +
-//           `- Use best practices for production\n` +
-//           `- Do not include explanations or bullet points`
-//         : `Provide a concise DevOps-focused response to: ${prompt}\n` +
-//           `- Use bullet points (max 10)\n` +
-//           `- Keep it technical and specific to DevOps`;
-
-//       const result = await this.model.generateContent({
-//         contents: [{
-//           parts: [{ text: instructions }]
-//         }]
-//       });
-
-//       const response = await result.response;
-//       return {
-//         text: response.text(),
-//         isCode: isCodeRequest
-//       };
-//     } catch (error) {
-//       console.error('Gemini API error:', error);
-//       throw new Error('Failed to generate response');
-//     }
-//   }
-// }
-
-// module.exports = new GeminiService();
-
-
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
 
 class GeminiService {
-  constructor() {
-    if (!config.gemini.apiKey) {
-      throw new Error('Google Gemini API key not configured');
+    constructor() {
+        if (!config.gemini.apiKey) {
+            throw new Error('Google Gemini API key not configured');
+        }
+
+        this.genAI = new GoogleGenerativeAI(config.gemini.apiKey);
+        this.model = this.genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            generationConfig: {
+                maxOutputTokens: config.app.maxResponseLength,
+            },
+        });
     }
 
-    this.genAI = new GoogleGenerativeAI(config.gemini.apiKey);
-    this.model = this.genAI.getGenerativeModel({
-      model: "gemini-1.5-flash", //gemini-1.0-pro",
-      generationConfig: {
-        maxOutputTokens: config.app.maxResponseLength
-      }
-    });
-  }
-
-  async generateDevOpsResponse(prompt) {
-    try {
-      const generationConfig = {
-        temperature: 0.7,
-        topP: 0.9,
-        maxOutputTokens: config.app.maxResponseLength,
-      };
-
-      const result = await this.model.generateContent({
-        contents: [{
-          role: "user",
-          parts: [{
-            text: `You are a DevOps expert. Provide a concise response to the following query:
-                  \n${prompt}\n
-                  - Respond in bullet points (max 10)
-                  - Keep it technical and specific to DevOps
-                  - If question is not DevOps-related, explain this is a DevOps-focused bot`
-          }]
-        }],
-        generationConfig
-      });
-
-      const response = await result.response;
-      return response.text();
-    } catch (error) {
-      console.error('Gemini API error:', error);
-      throw new Error('Failed to generate response: ' + error.message);
+    // Universal prompt for the DevOps bot
+    constructPrompt(prompt) {
+        // A generic and dynamic prompt to send to the AI
+        return `You are a DevOps expert assistant. Please respond to the following request: "${prompt}".
+            - If the user asks for code, generate clean and accurate code (e.g., Terraform, Bash).
+            - For YAML/TF code, format it as labeled code blocks (e.g., \`\`\`terraform\`\`\` or \`\`\`yaml\`\`\`).
+            - If the user request does not specify code, provide a concise explanation of the concept.`;
     }
-  }
+
+    // Generate response for DevOps-related request
+    async generateDevOpsResponse(prompt) {
+        const dynamicPrompt = this.constructPrompt(prompt);
+
+        try {
+            // Send request to the AI
+            const response = await this.model.generateContent({
+                contents: [{ role: "user", parts: [{ text: dynamicPrompt }] }],
+                generationConfig: {
+                    temperature: 0.7, // Control creativity level
+                    topP: 0.9, // Control diversity of responses
+                    maxOutputTokens: 3000, // Define a max token limit
+                },
+            });
+
+            // Parse and clean the raw response (removing unnecessary formatting)
+            const rawResponse = response.response.text();
+            return this.cleanResponse(rawResponse);
+
+        } catch (error) {
+            console.error("Error fetching data from Gemini API:", error.message);
+            throw new Error("API call failed: " + error.message);
+        }
+    }
+
+    // Clean up AI's response to return only meaningful content
+    cleanResponse(rawResponse) {
+        let cleanedResponse = rawResponse
+            .replace(/```(.*?)```/gs, (match, p1) => p1) // Remove code block markers (optional)
+            .trim(); // Trim whitespace
+        return cleanedResponse;
+    }
 }
 
 module.exports = new GeminiService();
+
+// const { GoogleGenerativeAI } = require('@google/generative-ai');
+// const config = require('../config');
+
+// class GeminiService {
+//     constructor() {
+//         if (!config.gemini.apiKey) {
+//             throw new Error('Google Gemini API key not configured');
+//         }
+
+//         this.genAI = new GoogleGenerativeAI(config.gemini.apiKey);
+//         this.model = this.genAI.getGenerativeModel({
+//             model: "gemini-1.5-flash",
+//             generationConfig: {
+//                 maxOutputTokens: config.app.maxResponseLength, // Define a max token limit
+//             },
+//         });
+//     }
+
+//     // Dynamic prompt construction based on user input
+//     constructSpecificPrompt(prompt) {
+//         const lowerPrompt = prompt.toLowerCase();
+
+//         // Dynamically handle providers, resources, and configurations
+//         const provider = lowerPrompt.match(/\b(aws|azure|gcp|kubernetes|terraform)\b/gi)?.[0]?.toUpperCase() || "Terraform";
+//         return `Generate Terraform code for the following request: "${prompt}". Assume the provider is ${provider}. Only provide the Terraform code, without any explanations or additional comments.`;
+//     }
+
+//     // Generate Terraform code using the AI API
+//     async generateTerraformResponse(prompt) {
+//         try {
+//             const dynamicPrompt = this.constructSpecificPrompt(prompt); // Dynamically crafted prompt
+//             const generationConfig = {
+//                 temperature: 0.7, // Control creativity level
+//                 topP: 0.9,
+//                 maxOutputTokens: config.app.maxResponseLength,
+//             };
+
+//             // Send request to AI API
+//             const result = await this.model.generateContent({
+//                 contents: [{ role: "user", parts: [{ text: dynamicPrompt }] }],
+//                 generationConfig,
+//             });
+
+//             // Clean and return response
+//             const rawResponse = await result.response.text();
+//             return this.cleanResponse(rawResponse);
+
+//         } catch (error) {
+//             console.error("Gemini API error:", error.message);
+//             throw new Error("Failed to generate response: " + error.message);
+//         }
+//     }
+
+//     // Clean Terraform output to ensure only code is returned
+//     cleanResponse(rawResponse) {
+//         let cleanedResponse = rawResponse
+//             .replace(/```terraform/g, "") // Remove "```terraform" markers.
+//             .replace(/```/g, "") // Remove other Markdown blocks.
+//             .replace(/^\s*\* .+/gm, "") // Remove bullet points or explanations.
+//             .trim(); // Trim any extra whitespace or newlines.
+
+//         return cleanedResponse;
+//     }
+// }
+
+// module.exports = new GeminiService();
