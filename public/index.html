@@ -25,10 +25,59 @@
             text-align: center;
         }
 
-        /* Logo styling */
+        /* First logo styling */
+        .top-logo {
+            display: block;
+            margin: 0 auto 20px auto; /* Center the logo and add spacing below */
+            width: 200px; /* Adjust size */
+            height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease;
+        }
+
+        .top-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .company-name {
+            font-style: italic;
+            font-weight: 800;
+            color: var(--neon-green);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            size: 3.5rem;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            letter-spacing: 1px;
+            font-size: 2.5rem;
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(45, 206, 137, 0.5);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(45, 206, 137, 0.8);
+            }
+        }
+
+        /* Header container styling for second logo and title in one line */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Spacing between the second logo and the title */
+            margin-bottom: 20px;
+        }
+
+        /* Second logo styling */
         .logo {
-            max-width: 120px;
-            margin-bottom: 10px;
+            width: 50px; /* Set logo width */
+            height: 35px; /* Set logo height */
+            display: inline-block;
         }
 
         /* Textarea styling */
@@ -71,7 +120,7 @@
             transform: scale(0.98);
         }
 
-        /* Response area */
+        /* Response area styling */
         pre {
             background: #f4f4f4;
             padding: 15px;
@@ -85,19 +134,31 @@
 
         /* Error message styling */
         .error {
-            color: red;
+            color: rgb(148, 7, 7);
             font-weight: bold;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            font-family: sans-serif
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Logo at the top -->
-        <img src="./images/logo.png" alt="DevOps Chatbot Logo" class="logo">
-        <img src="./images/logo_intelliswift.png" alt="DevOps Chatbot Logo" class="logo">
+        <!-- Top Logo -->
+        <img src="images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
 
-        <!-- Title and Instructions -->
-        <h1>DevOps Chatbot</h1>
+        <!-- Header: Second Logo and Title -->
+        <div class="header-container">
+            <!-- Second Logo -->
+            <img src="images/logo.png" alt="Chatbot Logo" class="logo">
+
+            <!-- Title -->
+            <h1 class="glow"><span class="company-name">Chatbot</span></h1>
+        </div>
+
+        <!-- Description -->
         <p>Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts).</p>
 
         <!-- Input Textarea -->
@@ -161,7 +222,6 @@
     </script>
 </body>
 </html>
-
 
 <!-- <!DOCTYPE html>
 <html lang="en">

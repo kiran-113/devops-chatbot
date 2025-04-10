@@ -12,6 +12,9 @@ app.use(bodyParser.json());
 // Serve static files from the "public" directory (like index.html)
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Serve images from the "/images" directory
+app.use('/images', express.static(path.join(__dirname, '../images')));
+
 // DevOps-specific keywords
 const devOpsKeywords = [
     "terraform", "ansible", "kubernetes", "docker", "aws", "azure", "gcp",
