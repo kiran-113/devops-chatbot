@@ -1,3 +1,4 @@
+//file: src/config/index.js
 require('dotenv').config();
 
 module.exports = {

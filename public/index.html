@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelliswift DevOps Chatbot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>DevOps Chatbot</title>
     <style>
+        /* General styling */
         :root {
-            --primary: #5e72e4;
+            --primary:#5e72e4;
             --primary-light: #7e8ef1;
             --secondary: #2dce89;
             --accent: #f5365c;
@@ -23,99 +23,33 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            color: var(--dark);
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
         }
 
+        /* Container styling */
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 3px solid rgba(94, 114, 228, 0.2);
-        }
-
-        .logo {
+        /* First logo styling */
+        .top-logo {
             height: 110px;
             width: auto;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
             transition: transform 0.3s ease;
         }
 
-        .logo_devops {
-            height: 40px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
-        .logo:hover {
+        .top-logo:hover {
             transform: scale(1.05);
-        }
-
-        .chat-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .chat-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-
-        .chat-header {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: white;
-            padding: 1.25rem 2rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .chat-body {
-            padding: 2rem;
-            min-height: 400px;
-        }
-
-        #response {
-            white-space: pre-line;
-            font-family: 'Fira Code', monospace;
-            background: var(--code-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid var(--secondary);
-            margin-top: 1.5rem;
-            line-height: 1.7;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        #response:hover {
-            box-shadow: inset 0 1px 6px rgba(0,0,0,0.1);
-            transform: translateX(2px);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
         }
 
         .company-name {
             font-style: italic;
-            font-weight: 800;
+            font-weight: 850;
             color: var(--neon-green);
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             size: 3.5rem;
@@ -126,23 +60,57 @@
             font-size: 3.5rem;
         }
 
-        #message {
-            flex: 1;
-            padding: 0.875rem 1.25rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
         }
 
-        #message:focus {
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(45, 206, 137, 0.5);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(45, 206, 137, 0.8);
+            }
+        }
+
+        /* Header container styling for second logo and title in one line */
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid rgba(94, 114, 228, 0.2);
+        }
+
+        /* Second logo styling */
+        .logo {
+            height: 45px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        /* Textarea styling */
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea:focus {
             outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.2);
-            transform: translateY(-1px);
+            border-color: #5e72e4;
+            box-shadow: 0 0 4px rgba(94, 114, 228, 0.3);
         }
 
+        /* Button styling */
         button {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
@@ -167,405 +135,213 @@
             transform: translateY(0);
         }
 
-        .typing-indicator {
-            display: none;
-            color: var(--secondary);
+        /* Response area styling */
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        /* Error message styling */
+        .error {
+            color: rgb(148, 7, 7);
+            font-weight: bold;
             font-style: italic;
-            margin-top: 1rem;
-            font-weight: 500;
-        }
-
-        .response-point {
-            margin-bottom: 0.75rem;
-            position: relative;
-            padding-left: 1.75rem;
-            transition: all 0.2s ease;
-        }
-
-        .response-point:hover {
-            transform: translateX(3px);
-        }
-
-        .response-point:before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
+            margin-top: 10px;
             font-size: 1.1rem;
-            text-shadow: 0 0 8px rgba(245, 54, 92, 0.3);
-        }
-
-        /* Animation for typing indicator */
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .typing-indicator:after {
-            content: "...";
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Glow effect for important elements */
-        .glow {
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px rgba(45, 206, 137, 0.5);
-            }
-            to {
-                text-shadow: 0 0 10px rgba(45, 206, 137, 0.8);
-            }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .chat-body {
-                padding: 1.5rem;
-            }
+            text-align: center;
+            font-family: sans-serif
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="images/logo_intelliswift.png" alt="Company Logo" class="logo">
-            <img src="images/logo.png" alt="DevOps Chatbot Logo" class="logo_devops">
+        <!-- Header: Second Logo and Title -->
+        <div class="header-container">
+            <img src="images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
+            <!-- Second Logo -->
+            <img src="images/logo.png" alt="Chatbot Logo" class="logo">
+
+            <!-- Title -->
             <h1 class="glow"><span class="company-name">Chatbot</span></h1>
-            <!-- <h1 class="glow"><span class="company-name">Intelliswift  </span> DevOps Chatbot</h1> -->
         </div>
 
-        <div class="chat-container">
-            <div class="chat-header">
-                 Intelligent DevOps Chatbot
-            </div>
-            <div class="chat-body">
-                <p style="color: var(--dark); font-weight: 500;">Intelligent DevOps Chatbot</p>
+        <!-- Description -->
+        <p style="font-size: 1.1rem; font-weight: 500; color: #050505; font-style: italic; line-height: 1.6;">
+            Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
+        </p>
 
-                <div class="input-group">
-                    <input type="text" id="message" placeholder="Type your DevOps question...">
-                    <button onclick="sendMessage()">Ask the Expert</button>
-                </div>
 
-                <div id="response"></div>
-                <div id="typing" class="typing-indicator">Generating response</div>
-            </div>
+        <!-- Input Textarea -->
+        <textarea id="prompt" placeholder="Enter your query here..."></textarea>
+
+        <!-- Submit Button -->
+        <!-- Submit Button aligned to the right -->
+        <div style="text-align: right;">
+            <button onclick="sendRequest()">Ask the Expert</button>
         </div>
+
+
+        <!-- Response Container -->
+        <div id="response"></div>
     </div>
 
     <script>
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            const responseDiv = document.getElementById('response');
-            const typingIndicator = document.getElementById('typing');
+        // Function to send data to the server
+        async function sendRequest() {
+            const prompt = document.getElementById("prompt").value; // Get user input
+            const responseDiv = document.getElementById("response"); // Response container
 
-            if (!message) {
-                responseDiv.innerHTML = '<div class="response-point">Please enter a question</div>';
+            // Clear the response area
+            responseDiv.innerHTML = "";
+
+            if (!prompt) {
+                responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
                 return;
             }
 
-            // Clear previous response and show typing indicator
-            responseDiv.innerHTML = '';
-            typingIndicator.style.display = 'block';
+            // Show loading indicator
+            responseDiv.innerHTML = "<p style='font-family: Poppins, sans-serif; font-size: 1.2rem; font-style: italic; color: #02030c;'>Hang tight! Getting response...</p>";
 
             try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
+                // POST request to the server
+                const response = await fetch("/", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ prompt }), // Send the user's prompt
                 });
 
-                const data = await response.json();
-                typingIndicator.style.display = 'none';
-
-                if (data.error) {
-                    responseDiv.innerHTML = `<div class="response-point" style="color: var(--accent)">Error: ${data.error}</div>`;
+                const result = await response.json();
+                if (result.success) {
+                    // Display the response if successful
+                    responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
                 } else {
-                    // Clean and format the response
-                    const formattedResponse = data.data.response
-                        .split('\n')
-                        .filter(line => line.trim().length > 0)
-                        .map(line => {
-                            // Remove all ** markers and trim
-                            const cleanLine = line.replace(/\*\*/g, '').trim();
-                            // Remove bullet if present and use our styled version
-                            return `<div class="response-point">${cleanLine.replace(/^[•\-*]/, '').trim()}</div>`;
-                        })
-                        .join('');
-
-                    responseDiv.innerHTML = formattedResponse || '<div class="response-point">No response received</div>';
+                    // Show error message from the backend
+                    responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
                 }
             } catch (error) {
-                typingIndicator.style.display = 'none';
-                responseDiv.innerHTML = '<div class="response-point" style="color: var(--accent)">Error connecting to the chatbot</div>';
-                console.error(error);
+                // Catch and display any client-side or server-side errors
+                responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
             }
         }
 
-        // Allow sending message with Enter key
-        document.getElementById('message').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
+        // Allow user to submit input with Enter key
+        document.getElementById("prompt").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent adding a new line in the textarea
+                sendRequest(); // Run the function
             }
         });
-
-        // Focus the input field on page load
-        window.onload = function() {
-            document.getElementById('message').focus();
-        };
     </script>
 </body>
 </html>
-
 
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelliswift DevOps Chatbot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <title>DevOps Chatbot</title>
     <style>
-        :root {
-            --primary: #4285f4;
-            --secondary: #34a853;
-            --accent: #ea4335;
-            --dark: #202124;
-            --light: #f8f9fa;
-            --code-bg: #f1f3f4;
-        }
-
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            color: var(--dark);
+            padding: 20px;
+            background-color: #f4f4f9;
         }
-
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 700px;
+            margin: auto;
             padding: 20px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .logo {
-            height: 80px;
-            width: auto;
-        }
-
-        .chat-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .chat-body {
-            padding: 20px;
-            min-height: 400px;
-        }
-
-        #response {
-            white-space: pre-line;
-            font-family: 'Source Code Pro', monospace;
-            background: var(--code-bg);
-            padding: 15px;
+            background: #fff;
             border-radius: 8px;
-            border-left: 4px solid var(--secondary);
-            margin-top: 20px;
-            line-height: 1.6;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-
-        #message {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        #message:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(66,133,244,0.2);
-        }
-
         button {
-            background: var(--primary);
+            padding: 10px 20px;
+            font-size: 16px;
             color: white;
+            background-color: #5e72e4;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background 0.3s;
         }
-
         button:hover {
-            background: #3367d6;
+            background-color: #4a63d0;
         }
-
-        .typing-indicator {
-            display: none;
-            color: var(--secondary);
-            font-style: italic;
-            margin-top: 10px;
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-
-        .response-point {
-            margin-bottom: 8px;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .response-point:before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        /* Animation for typing indicator */
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .typing-indicator:after {
-            content: "...";
-            animation: pulse 1.5s infinite;
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <img src="/images/logo.png" alt="DevOps Chatbot Logo" class="logo">
-            <h1>Intellishift DevOps Chatbot</h1>
-        </div>
-
-        <div class="chat-container">
-            <div class="chat-header">
-                Ask me anything about DevOps
-            </div>
-            <div class="chat-body">
-                <p>I can help with Docker, Kubernetes, CI/CD, Terraform, and more!</p>
-
-                <div class="input-group">
-                    <input type="text" id="message" placeholder="Type your DevOps question...">
-                    <button onclick="sendMessage()">Ask</button>
-                </div>
-
-                <div id="response"></div>
-                <div id="typing" class="typing-indicator">Generating response</div>
-            </div>
-        </div>
+        <h1>DevOps Chatbot</h1>
+        <p>Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts).</p>
+        <textarea id="prompt" placeholder="Enter your query here..."></textarea>
+        <button onclick="sendRequest()">Send</button>
+        <div id="response"></div>
     </div>
 
     <script>
-        async function sendMessage() {
-            const message = document.getElementById('message').value;
-            const responseDiv = document.getElementById('response');
-            const typingIndicator = document.getElementById('typing');
+        async function sendRequest() {
+            const prompt = document.getElementById("prompt").value;
+            const responseDiv = document.getElementById("response");
 
-            if (!message) {
-                responseDiv.innerHTML = '<div class="response-point">Please enter a question</div>';
+            // Clear response area
+            responseDiv.innerHTML = "";
+
+            if (!prompt) {
+                responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
                 return;
             }
 
-            // Clear previous response and show typing indicator
-            responseDiv.innerHTML = '';
-            typingIndicator.style.display = 'block';
+            // Show loading text
+            responseDiv.innerHTML = "<p>Processing your request...</p>";
 
             try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
+                const response = await fetch("/", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ prompt }), // Send prompt to server
                 });
 
-                const data = await response.json();
-                typingIndicator.style.display = 'none';
-
-                if (data.error) {
-                    responseDiv.innerHTML = `<div class="response-point" style="color: var(--accent)">Error: ${data.error}</div>`;
+                const result = await response.json();
+                if (result.success) {
+                    responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
                 } else {
-                    // Clean and format the response
-                    const formattedResponse = data.data.response
-                        .split('\n')
-                        .filter(line => line.trim().length > 0)
-                        .map(line => {
-                            // Remove all ** markers and trim
-                            const cleanLine = line.replace(/\*\*/g, '').trim();
-                            // Remove bullet if present and use our styled version
-                            return `<div class="response-point">${cleanLine.replace(/^[•\-*]/, '').trim()}</div>`;
-                        })
-                        .join('');
-
-                    responseDiv.innerHTML = formattedResponse || '<div class="response-point">No response received</div>';
+                    responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
                 }
             } catch (error) {
-                typingIndicator.style.display = 'none';
-                responseDiv.innerHTML = '<div class="response-point" style="color: var(--accent)">Error connecting to the chatbot</div>';
-                console.error(error);
+                responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
             }
         }
-
-        // Allow sending message with Enter key
-        document.getElementById('message').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Focus the input field on page load
-        window.onload = function() {
-            document.getElementById('message').focus();
-        };
     </script>
 </body>
-</html>
- -->
+</html> -->
