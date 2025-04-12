@@ -18,7 +18,7 @@ app.use('/images', express.static(path.join(__dirname, '../images')));
 // DevOps-specific keywords
 const devOpsKeywords = [
     "terraform", "ansible", "kubernetes", "docker", "aws", "azure", "gcp",
-    "ci/cd", "jenkins", "devops", "cloud", "yaml", "helm",
+    "ci/cd", "jenkins", "devops", "cloud", "yaml", "helm", "python",
     "configuration management", "build pipeline", "github actions", "gitlab pipelines"
 ];
 

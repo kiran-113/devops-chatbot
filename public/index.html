@@ -6,8 +6,22 @@
     <title>DevOps Chatbot</title>
     <style>
         /* General styling */
+        :root {
+            --primary:#5e72e4;
+            --primary-light: #7e8ef1;
+            --secondary: #2dce89;
+            --accent: #f5365c;
+            --dark: #172b4d;
+            --light: #f7fafc;
+            --code-bg: #edf2f7;
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --neon-accent: #00f2fe;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
             padding: 20px;
             background-color: #f4f4f9;
@@ -16,21 +30,16 @@
 
         /* Container styling */
         .container {
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
         /* First logo styling */
         .top-logo {
-            display: block;
-            margin: 0 auto 20px auto; /* Center the logo and add spacing below */
-            width: 200px; /* Adjust size */
-            height: auto; /* Maintain aspect ratio */
+            height: 110px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
             transition: transform 0.3s ease;
         }
 
@@ -40,7 +49,7 @@
 
         .company-name {
             font-style: italic;
-            font-weight: 800;
+            font-weight: 850;
             color: var(--neon-green);
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             size: 3.5rem;
@@ -48,7 +57,7 @@
             padding: 0;
             text-align: center;
             letter-spacing: 1px;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
         }
 
         .glow {
@@ -68,16 +77,18 @@
         .header-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px; /* Spacing between the second logo and the title */
-            margin-bottom: 20px;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid rgba(94, 114, 228, 0.2);
         }
 
         /* Second logo styling */
         .logo {
-            width: 50px; /* Set logo width */
-            height: 35px; /* Set logo height */
-            display: inline-block;
+            height: 45px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
         }
 
         /* Textarea styling */
@@ -101,23 +112,27 @@
 
         /* Button styling */
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            background-color: #5e72e4;
             border: none;
-            border-radius: 8px;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(94, 114, 228, 0.2);
         }
 
         button:hover {
-            background-color: #4a63d0;
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(94, 114, 228, 0.25);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
         }
 
         button:active {
-            transform: scale(0.98);
+            transform: translateY(0);
         }
 
         /* Response area styling */
@@ -146,11 +161,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Top Logo -->
-        <img src="images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-
         <!-- Header: Second Logo and Title -->
         <div class="header-container">
+            <img src="images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
             <!-- Second Logo -->
             <img src="images/logo.png" alt="Chatbot Logo" class="logo">
 
@@ -159,13 +172,20 @@
         </div>
 
         <!-- Description -->
-        <p>Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts).</p>
+        <p style="font-size: 1.1rem; font-weight: 500; color: #050505; font-style: italic; line-height: 1.6;">
+            Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
+        </p>
+
 
         <!-- Input Textarea -->
         <textarea id="prompt" placeholder="Enter your query here..."></textarea>
 
         <!-- Submit Button -->
-        <button onclick="sendRequest()">Run</button>
+        <!-- Submit Button aligned to the right -->
+        <div style="text-align: right;">
+            <button onclick="sendRequest()">Ask the Expert</button>
+        </div>
+
 
         <!-- Response Container -->
         <div id="response"></div>
@@ -186,7 +206,7 @@
             }
 
             // Show loading indicator
-            responseDiv.innerHTML = "<p>Processing your request...</p>";
+            responseDiv.innerHTML = "<p style='font-family: Poppins, sans-serif; font-size: 1.2rem; font-style: italic; color: #02030c;'>Hang tight! Getting response...</p>";
 
             try {
                 // POST request to the server
