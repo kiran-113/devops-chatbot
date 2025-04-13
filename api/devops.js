@@ -1,4 +1,5 @@
-const geminiService = require('../../services/gemini.service'); // Adjust path based on your structure
+//const geminiService = require('../../services/gemini.service'); // Adjust path based on your structure
+const geminiService = require('../services/gemini.service');
 
 const devOpsKeywords = [
   "terraform", "ansible", "kubernetes", "docker", "aws", "azure", "gcp",
