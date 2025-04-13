@@ -1,3 +1,4 @@
+//file: src/services/gemini.service.js
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
 
