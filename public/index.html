@@ -63,8 +63,17 @@
       transform: scale(1.05);
     }
 
+    /* New wrapper for Chatbot logo and title */
+    .chatbot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .logo {
-      height: 40px;
+      height: 30px;
       width: auto;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
@@ -75,7 +84,6 @@
       color: var(--dark);
       text-shadow: 0 2px 5px rgba(0,0,0,0.2);
       font-size: 2.5rem;
-      text-align: center;
       margin: 0;
     }
 
@@ -173,19 +181,7 @@
       .logo {
         height: 30px;
       }
-
-      button {
-        width: 100%;
-      }
-
-      .header-container {
-        flex-direction: column;
-      }
-
-      .description {
-        font-size: 1rem;
-        text-align: center;
-      }
+      /* The .chatbot-header remains flex-row so that the logo and title are on one line */
     }
   </style>
 </head>
@@ -194,8 +190,11 @@
     <!-- Header Section aligned to the top -->
     <div class="header-container">
       <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-      <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
-      <h1 class="glow company-name">Chatbot</h1>
+      <!-- Chatbot header: single line even on mobile -->
+      <div class="chatbot-header">
+        <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
+        <h1 class="glow company-name">Chatbot</h1>
+      </div>
     </div>
 
     <!-- Description -->
