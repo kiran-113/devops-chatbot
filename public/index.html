@@ -1,347 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Chatbot</title>
-    <style>
-        /* General styling */
-        :root {
-            --primary:#5e72e4;
-            --primary-light: #7e8ef1;
-            --secondary: #2dce89;
-            --accent: #f5365c;
-            --dark: #172b4d;
-            --light: #f7fafc;
-            --code-bg: #edf2f7;
-            --gradient-start: #667eea;
-            --gradient-end: #764ba2;
-            --neon-accent: #00f2fe;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevOps Chatbot</title>
+  <style>
+    :root {
+      --primary: #5e72e4;
+      --primary-light: #7e8ef1;
+      --secondary: #2dce89;
+      --accent: #f5365c;
+      --dark: #172b4d;
+      --light: #f7fafc;
+      --code-bg: #edf2f7;
+      --gradient-start: #667eea;
+      --gradient-end: #764ba2;
+      --neon-accent: #00f2fe;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
+    /* Make the body take up the full viewport,
+       center content horizontally,
+       and align content to the top vertically */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-        /* Container styling */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    /* Container still centers horizontally but stays at the top */
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+    }
 
-        /* First logo styling */
-        .top-logo {
-            height: 110px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
+    .header-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 3px solid rgba(94, 114, 228, 0.2);
+    }
 
-        .top-logo:hover {
-            transform: scale(1.05);
-        }
+    .top-logo {
+      height: 90px;
+      width: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      transition: transform 0.3s ease;
+    }
 
-        .company-name {
-            font-style: italic;
-            font-weight: 850;
-            color: var(--neon-green);
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            size: 3.5rem;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            letter-spacing: 1px;
-            font-size: 3.5rem;
-        }
+    .top-logo:hover {
+      transform: scale(1.05);
+    }
 
-        .glow {
-            animation: glow 2s ease-in-out infinite alternate;
-        }
+    .logo {
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px rgba(45, 206, 137, 0.5);
-            }
-            to {
-                text-shadow: 0 0 10px rgba(45, 206, 137, 0.8);
-            }
-        }
+    .company-name {
+      font-style: italic;
+      font-weight: 850;
+      color: var(--dark);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 2.5rem;
+      text-align: center;
+      margin: 0;
+    }
 
-        /* Header container styling for second logo and title in one line */
-        .header-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 3px solid rgba(94, 114, 228, 0.2);
-        }
+    .glow {
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-        /* Second logo styling */
-        .logo {
-            height: 45px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+      }
+      to {
+        text-shadow: 0 0 5px rgba(3, 1, 1, 0.8);
+      }
+    }
 
-        /* Textarea styling */
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            resize: none;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
 
-        textarea:focus {
-            outline: none;
-            border-color: #5e72e4;
-            box-shadow: 0 0 4px rgba(94, 114, 228, 0.3);
-        }
+    textarea:focus {
+      outline: none;
+      border-color: #5e72e4;
+      box-shadow: 0 0 4px rgba(94, 114, 228, 0.3);
+    }
 
-        /* Button styling */
-        button {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            border: none;
-            padding: 0.875rem 1.75rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(94, 114, 228, 0.2);
-        }
+    button {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(94, 114, 228, 0.2);
+    }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(94, 114, 228, 0.25);
-            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-        }
+    button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    }
 
-        button:active {
-            transform: translateY(0);
-        }
+    button:active {
+      transform: translateY(0);
+    }
 
-        /* Response area styling */
-        pre {
-            background: #f4f4f4;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            text-align: left;
-            margin-top: 15px;
-        }
+    .description {
+      font-size: 1.1rem;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
 
-        /* Error message styling */
-        .error {
-            color: rgb(148, 7, 7);
-            font-weight: bold;
-            font-style: italic;
-            margin-top: 10px;
-            font-size: 1.1rem;
-            text-align: center;
-            font-family: sans-serif
-        }
-    </style>
+    pre {
+      background: var(--code-bg);
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      text-align: left;
+      margin-top: 15px;
+    }
+
+    .error {
+      color: rgb(148, 7, 7);
+      font-weight: bold;
+      font-style: italic;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .company-name {
+        font-size: 2rem;
+      }
+
+      .top-logo {
+        height: 70px;
+      }
+
+      .logo {
+        height: 30px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .header-container {
+        flex-direction: column;
+      }
+
+      .description {
+        font-size: 1rem;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header: Second Logo and Title -->
-        <div class="header-container">
-            <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-            <!-- Second Logo -->
-            <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
-
-            <!-- Title -->
-            <h1 class="glow"><span class="company-name">Chatbot</span></h1>
-        </div>
-
-        <!-- Description -->
-        <p style="font-size: 1.1rem; font-weight: 500; color: #050505; font-style: italic; line-height: 1.6;">
-            Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
-        </p>
-
-
-        <!-- Input Textarea -->
-        <textarea id="prompt" placeholder="Enter your query here..."></textarea>
-
-        <!-- Submit Button -->
-        <!-- Submit Button aligned to the right -->
-        <div style="text-align: right;">
-            <button onclick="sendRequest()">Ask the Expert</button>
-        </div>
-
-
-        <!-- Response Container -->
-        <div id="response"></div>
+  <div class="container">
+    <!-- Header Section aligned to the top -->
+    <div class="header-container">
+      <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
+      <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
+      <h1 class="glow company-name">Chatbot</h1>
     </div>
 
-    <script>
-        // Function to send data to the server
-        async function sendRequest() {
-            const prompt = document.getElementById("prompt").value; // Get user input
-            const responseDiv = document.getElementById("response"); // Response container
+    <!-- Description -->
+    <p class="description">
+      Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
+    </p>
 
-            // Clear the response area
-            responseDiv.innerHTML = "";
+    <!-- Textarea -->
+    <textarea id="prompt" placeholder="Enter your query here..."></textarea>
 
-            if (!prompt) {
-                responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
-                return;
-            }
+    <!-- Button -->
+    <div style="text-align: right;">
+      <button onclick="sendRequest()">Ask the Expert</button>
+    </div>
 
-            // Show loading indicator
-            responseDiv.innerHTML = "<p style='font-family: Poppins, sans-serif; font-size: 1.2rem; font-style: italic; color: #02030c;'>Hang tight! Getting response...</p>";
+    <!-- Response -->
+    <div id="response"></div>
+  </div>
 
-            try {
-                // POST request to the server
-                const response = await fetch("/api/devops", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ prompt }), // Send the user's prompt
-                });
+  <script>
+    async function sendRequest() {
+      const prompt = document.getElementById("prompt").value;
+      const responseDiv = document.getElementById("response");
+      responseDiv.innerHTML = "";
 
-                const result = await response.json();
-                if (result.success) {
-                    // Display the response if successful
-                    responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
-                } else {
-                    // Show error message from the backend
-                    responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
-                }
-            } catch (error) {
-                // Catch and display any client-side or server-side errors
-                responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
-            }
-        }
+      if (!prompt) {
+        responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
+        return;
+      }
 
-        // Allow user to submit input with Enter key
-        document.getElementById("prompt").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault(); // Prevent adding a new line in the textarea
-                sendRequest(); // Run the function
-            }
+      responseDiv.innerHTML = "<p style='font-size: 1.2rem; font-style: italic;'>Hang tight! Getting response...</p>";
+
+      try {
+        const response = await fetch("/api/devops", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
         });
-    </script>
+
+        const result = await response.json();
+        if (result.success) {
+          responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
+        } else {
+          responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
+        }
+      } catch (error) {
+        responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
+      }
+    }
+
+    document.getElementById("prompt").addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendRequest();
+      }
+    });
+  </script>
 </body>
 </html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #5e72e4;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4a63d0;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .error {
-            color: red;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>DevOps Chatbot</h1>
-        <p>Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts).</p>
-        <textarea id="prompt" placeholder="Enter your query here..."></textarea>
-        <button onclick="sendRequest()">Send</button>
-        <div id="response"></div>
-    </div>
-
-    <script>
-        async function sendRequest() {
-            const prompt = document.getElementById("prompt").value;
-            const responseDiv = document.getElementById("response");
-
-            // Clear response area
-            responseDiv.innerHTML = "";
-
-            if (!prompt) {
-                responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
-                return;
-            }
-
-            // Show loading text
-            responseDiv.innerHTML = "<p>Processing your request...</p>";
-
-            try {
-                const response = await fetch("/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ prompt }), // Send prompt to server
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
-                } else {
-                    responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
-                }
-            } catch (error) {
-                responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
-            }
-        }
-    </script>
-</body>
-</html> -->
