@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DevOps Chatbot</title>
+
+  <!-- 1) Load Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     :root {
       --primary: #5e72e4;
@@ -18,11 +25,9 @@
       --neon-accent: #00f2fe;
     }
 
-    /* Make the body take up the full viewport,
-       center content horizontally,
-       and align content to the top vertically */
+    /* 2) Apply the "beautiful" font globally */
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Roboto Slab', serif;
       margin: 0;
       padding: 20px;
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -33,7 +38,11 @@
       align-items: flex-start;
     }
 
-    /* Container still centers horizontally but stays at the top */
+    /* Monospace for code blocks */
+    pre, code {
+      font-family: Menlo, Consolas, monospace;
+    }
+
     .container {
       width: 100%;
       max-width: 900px;
@@ -63,7 +72,6 @@
       transform: scale(1.05);
     }
 
-    /* New wrapper for Chatbot logo and title */
     .chatbot-header {
       display: flex;
       align-items: center;
@@ -90,7 +98,6 @@
     .glow {
       animation: glow 2s ease-in-out infinite alternate;
     }
-
     @keyframes glow {
       from {
         text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -170,27 +177,17 @@
     }
 
     @media (max-width: 600px) {
-      .company-name {
-        font-size: 2rem;
-      }
-
-      .top-logo {
-        height: 70px;
-      }
-
-      .logo {
-        height: 30px;
-      }
-      /* The .chatbot-header remains flex-row so that the logo and title are on one line */
+      .company-name { font-size: 2rem; }
+      .top-logo { height: 70px; }
+      .logo { height: 30px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header Section aligned to the top -->
+    <!-- Header Section -->
     <div class="header-container">
       <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-      <!-- Chatbot header: single line even on mobile -->
       <div class="chatbot-header">
         <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
         <h1 class="glow company-name">Chatbot</h1>
@@ -202,22 +199,21 @@
       Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
     </p>
 
-    <!-- Textarea -->
+    <!-- Input & Button -->
     <textarea id="prompt" placeholder="Enter your query here..."></textarea>
-
-    <!-- Button -->
     <div style="text-align: right;">
       <button onclick="sendRequest()">Ask the Expert</button>
     </div>
 
-    <!-- Response -->
+    <!-- AI Response -->
     <div id="response"></div>
   </div>
 
   <script>
     async function sendRequest() {
-      const prompt = document.getElementById("prompt").value;
+      const promptEl = document.getElementById("prompt");
       const responseDiv = document.getElementById("response");
+      const prompt = promptEl.value.trim();
       responseDiv.innerHTML = "";
 
       if (!prompt) {
@@ -225,32 +221,51 @@
         return;
       }
 
-      responseDiv.innerHTML = "<p style='font-size: 1.2rem; font-style: italic;'>Hang tight! Getting response...</p>";
+      // Show a “loading” message
+      responseDiv.innerHTML =
+        "<p style='font-size:1.2rem; font-style:italic;'>Hang tight! Getting response…</p>";
 
       try {
-        const response = await fetch("/api/devops", {
+        const res = await fetch("/api/devops", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt }),
         });
+        const result = await res.json();
 
-        const result = await response.json();
         if (result.success) {
-          responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
+          let text = result.data.response;
+
+          // Convert **bold** → <strong>bold</strong>
+          text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+          // Optionally strip all ** entirely:
+          // text = text.replace(/\*\*/g, "");
+
+          // Render preserving line-breaks
+          responseDiv.innerHTML = `<pre>${text}</pre>`;
         } else {
-          responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
+          responseDiv.innerHTML = `<p class="error">Error: ${
+            result.error || "Unknown error."
+          }</p>`;
         }
-      } catch (error) {
-        responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
+      } catch (err) {
+        responseDiv.innerHTML = `<p class="error">An error occurred: ${
+          err.message
+        }</p>`;
       }
     }
 
-    document.getElementById("prompt").addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        sendRequest();
-      }
-    });
+    // Send on Enter
+    document.getElementById("prompt")
+      .addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendRequest();
+        }
+      });
   </script>
 </body>
 </html>
+
+
