@@ -4,253 +4,198 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DevOps Chatbot</title>
+  <link rel="icon" type="image/x-icon" href="/chat_bot.ico" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
   <style>
     :root {
-      --primary: #5e72e4;
-      --primary-light: #7e8ef1;
-      --secondary: #2dce89;
-      --accent: #f5365c;
-      --dark: #172b4d;
-      --light: #f7fafc;
-      --code-bg: #edf2f7;
-      --gradient-start: #667eea;
-      --gradient-end: #764ba2;
-      --neon-accent: #00f2fe;
+      --primary: #5e72e4; --primary-light: #7e8ef1; --secondary: #2dce89;
+      --accent: #f5365c; --dark: #172b4d; --light: #f7fafc; --code-bg: #edf2f7;
     }
-
-    /* Make the body take up the full viewport,
-       center content horizontally,
-       and align content to the top vertically */
     body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 20px;
+      font-family: 'Roboto Slab', serif; margin: 0; padding: 0; min-height: 100vh;
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      color: #333; display: flex; justify-content: center; align-items: stretch; height: 100vh;
     }
-
-    /* Container still centers horizontally but stays at the top */
-    .container {
-      width: 100%;
-      max-width: 900px;
-      padding: 2rem 1rem;
-      box-sizing: border-box;
-    }
-
-    .header-container {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 3px solid rgba(94, 114, 228, 0.2);
-    }
-
-    .top-logo {
-      height: 90px;
-      width: auto;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-      transition: transform 0.3s ease;
-    }
-
-    .top-logo:hover {
-      transform: scale(1.05);
-    }
-
-    /* New wrapper for Chatbot logo and title */
-    .chatbot-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .logo {
-      height: 30px;
-      width: auto;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
-
-    .company-name {
-      font-style: italic;
-      font-weight: 850;
-      color: var(--dark);
-      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      font-size: 2.5rem;
-      margin: 0;
-    }
-
-    .glow {
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-      }
-      to {
-        text-shadow: 0 0 5px rgba(3, 1, 1, 0.8);
-      }
-    }
-
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 12px;
-      font-size: 16px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      resize: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: #5e72e4;
-      box-shadow: 0 0 4px rgba(94, 114, 228, 0.3);
-    }
-
-    button {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(94, 114, 228, 0.2);
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .description {
-      font-size: 1.1rem;
-      font-weight: 500;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 1.2rem;
-    }
-
-    pre {
-      background: var(--code-bg);
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      text-align: left;
-      margin-top: 15px;
-    }
-
-    .error {
-      color: rgb(148, 7, 7);
-      font-weight: bold;
-      font-style: italic;
-      margin-top: 10px;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
+    .container { width: 100%; max-width: 900px; min-height: 100vh; padding: 2rem 1rem 1rem 1rem; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+    .header-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 3px solid rgba(94, 114, 228, 0.2);}
+    .top-logo { height: 60px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); transition: transform 0.3s ease;}
+    .top-logo:hover { transform: scale(1.05);}
+    .chatbot-header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center;}
+    .logo { height: 30px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));}
+    .company-name { font-style: italic; font-weight: 850; color: var(--dark); text-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 2.5rem; margin: 0;}
+    .glow { animation: glow 2s ease-in-out infinite alternate;}
+    @keyframes glow { from { text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);} to { text-shadow: 0 0 5px rgba(3, 1, 1, 0.8);}}
+    .description { font-size: 1.1rem; font-weight: 500; font-style: italic; line-height: 1.6; margin-bottom: 1.2rem;}
+    #chat-history { flex: 1 1 auto; overflow-y: auto; margin-bottom: 10px; background: #fffdfa; border-radius: 8px; border: 1px solid #ececec; padding: 15px 10px; min-height: 180px; max-height: 60vh;}
+    .chat-bubble { margin: 8px 0; text-align: left;}
+    .chat-bubble.user { color: #26730e;}
+    .chat-bubble.bot { color: #29334d;}
+    .chat-bubble.loading { color: #777; font-style: italic;}
+    pre, code { font-family: Menlo, Consolas, monospace; }
+    pre { background: var(--code-bg); padding: 15px; border: 1px solid #ddd; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; text-align: left; margin-top: 6px; margin-bottom: 0; }
+    .error { color: rgb(148, 7, 7); font-weight: bold; font-style: italic; margin-top: 10px; font-size: 1.1rem; text-align: center;}
+    .input-area { margin-top: 2rem; position: relative;}
+    .send-box { position: relative; width: 100%; display: flex;}
+    #prompt { width: 100%; height: 70px; padding: 12px 40px 12px 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; resize: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); box-sizing: border-box; background: #fffdfa; transition: border 0.2s;}
+    #prompt:focus { outline: none; border-color: #5e72e4; box-shadow: 0 0 4px rgba(94, 114, 228, 0.20);}
+    #send-btn { position: absolute; right: 10px; bottom: 10px; background: none; border: none; padding: 0; margin: 0; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none;}
+    #send-btn svg { display: block; transition: transform 0.15s;}
+    #send-btn:active svg, #send-btn:focus svg { transform: scale(1.13); filter: brightness(1.2);}
+    #send-btn[disabled] { opacity: 0.4; pointer-events: none;}
+    .clear-btn { margin-top:10px;float:right;display:inline-block; background: #e40606; border-radius: 4px; border: 1px solid #f7f3f3; font-size: 1rem; color: #f4f1f1; padding: 4px 14px; cursor: pointer;}
+    .clear-btn:hover { background: #9a0202; }
     @media (max-width: 600px) {
-      .company-name {
-        font-size: 2rem;
-      }
-
-      .top-logo {
-        height: 70px;
-      }
-
-      .logo {
-        height: 30px;
-      }
-      /* The .chatbot-header remains flex-row so that the logo and title are on one line */
+      .company-name { font-size: 2rem;}
+      .top-logo { height: 70px;}
+      .logo { height: 30px;}
+      .container { padding: 1rem 0.4rem 0.4rem 0.4rem;}
+      #prompt { height: 50px;}
+      #chat-history { min-height: 100px; max-height: 38vh;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header Section aligned to the top -->
+    <!-- Header Section -->
     <div class="header-container">
       <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-      <!-- Chatbot header: single line even on mobile -->
       <div class="chatbot-header">
         <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
         <h1 class="glow company-name">Chatbot</h1>
       </div>
     </div>
+    <!-- Chat History -->
+    <div id="chat-history"></div>
 
-    <!-- Description -->
-    <p class="description">
-      Ask me any <strong>DevOps-related</strong> question or request code configurations (e.g., <code>Terraform</code>, <code>Kubernetes YAML</code>, <code>Bash scripts</code>).
-    </p>
-
-    <!-- Textarea -->
-    <textarea id="prompt" placeholder="Enter your query here..."></textarea>
-
-    <!-- Button -->
-    <div style="text-align: right;">
-      <button onclick="sendRequest()">Ask the Expert</button>
+    <!-- Input & "send" button as triangle inside textarea -->
+    <div class="input-area">
+      <div class="send-box">
+        <!-- NOTE: No <form> tag! -->
+        <textarea id="prompt" placeholder="Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts)."></textarea>
+        <button id="send-btn" aria-label="Send message" type="button">
+          <!-- Triangle Icon SVG -->
+          <svg viewBox="0 0 16 16" width="22" height="22" fill="#5e72e4" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="3,14 13,8 3,2" />
+          </svg>
+        </button>
+      </div>
+      <!-- Clear Chat button (optional but useful) -->
+      <button id="clear-btn" class="clear-btn">Clear Chat</button>
     </div>
-
-    <!-- Response -->
-    <div id="response"></div>
   </div>
-
   <script>
-    async function sendRequest() {
-      const prompt = document.getElementById("prompt").value;
-      const responseDiv = document.getElementById("response");
-      responseDiv.innerHTML = "";
+    // 1. Persistent chat history while the page is open!
+    let chatMessages = [];
 
+    // 2. Chat sending logic
+    async function sendRequest() {
+      const promptEl = document.getElementById("prompt");
+      const chatHistoryEl = document.getElementById("chat-history");
+      const sendBtn = document.getElementById("send-btn");
+      const prompt = promptEl.value.trim();
       if (!prompt) {
-        responseDiv.innerHTML = "<p class='error'>Please enter your query!</p>";
+        chatHistoryEl.innerHTML += "<p class='error'>Please enter your query!</p>";
+        console.log("[Frontend] No prompt entered.");
         return;
       }
 
-      responseDiv.innerHTML = "<p style='font-size: 1.2rem; font-style: italic;'>Hang tight! Getting response...</p>";
+      // 3. Add user message to chatMessages array
+      chatMessages.push({ role: "user", content: prompt });
+      console.log("[Frontend] User message pushed:", { role: "user", content: prompt });
+
+      // 4. Render user message and show loading bubble
+      chatHistoryEl.innerHTML += `
+        <div class="chat-bubble user"><strong>You:</strong> ${escapeHTML(prompt)}</div>
+        <div class="chat-bubble bot loading"><em>Hang tight! Getting response…</em></div>
+      `;
+      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+      sendBtn.disabled = true;
+      promptEl.disabled = true;
 
       try {
-        const response = await fetch("/api/devops", {
+        // 5. Prepare the request payload with full running history
+        const payload = {
+          prompt,
+          history: chatMessages.slice(0, -1) // exclude current user prompt (Gemini expects new prompt as last turn)
+        };
+        console.log("[Frontend] Sending to backend:", payload);
+
+        const res = await fetch("/api/devops", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify(payload),
         });
+        const result = await res.json();
 
-        const result = await response.json();
+        // Remove loading indicator
+        const bubbles = chatHistoryEl.querySelectorAll('.loading');
+        if (bubbles.length) bubbles[bubbles.length - 1].remove();
+
         if (result.success) {
-          responseDiv.innerHTML = `<pre>${result.data.response}</pre>`;
+          let text = result.data.response || '';
+          // Format bold Markdown (expand for more formats if needed)
+          text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+          chatHistoryEl.innerHTML += `<div class="chat-bubble bot"><pre>${text}</pre></div>`;
+          // 6. Add Gemini's reply to chatMessages
+          chatMessages.push({ role: "model", content: text });
+          console.log("[Frontend] Bot reply pushed:", { role: "model", content: text });
         } else {
-          responseDiv.innerHTML = `<p class='error'>Error: ${result.error || "An unknown error occurred."}</p>`;
+          chatHistoryEl.innerHTML += `<p class="error">Error: ${
+            result.error || "Unknown error."
+          }</p>`;
+          console.error("[Frontend] API error:", result.error);
         }
-      } catch (error) {
-        responseDiv.innerHTML = `<p class='error'>An error occurred: ${error.message}</p>`;
+      } catch (err) {
+        const bubbles = chatHistoryEl.querySelectorAll('.loading');
+        if (bubbles.length) bubbles[bubbles.length - 1].remove();
+        chatHistoryEl.innerHTML += `<p class="error">An error occurred: ${err.message}</p>`;
+        console.error("[Frontend] Exception caught:", err);
       }
+      promptEl.value = "";
+      promptEl.disabled = false;
+      sendBtn.disabled = false;
+      promptEl.focus();
+      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+
+      // Debug: Print the running history
+      console.log("[Frontend] chatMessages so far:", JSON.parse(JSON.stringify(chatMessages)));
     }
 
-    document.getElementById("prompt").addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
+    // XSS protection
+    function escapeHTML(str) {
+      return str.replace(/[&<>"']/g, function(m) {
+        return ({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        })[m];
+      });
+    }
+
+    // Button handler: send
+    document.getElementById("send-btn").addEventListener("click", sendRequest);
+
+    // Prevent Enter from reloading page, allow Shift+Enter for newline
+    document.getElementById("prompt").addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
         sendRequest();
       }
     });
+
+    // Optional: "Clear Chat" button (resets conversation but not page)
+    document.getElementById("clear-btn").addEventListener("click", function() {
+  if (confirm("Are you sure you want to clear the chat history?")) {
+    chatMessages = [];
+    document.getElementById("chat-history").innerHTML = "";
+    document.getElementById("prompt").value = "";
+    document.getElementById("prompt").focus();
+    console.log("[Frontend] Chat cleared.");
+  } else {
+    console.log("[Frontend] Chat clear cancelled by user.");
+  }
+});
   </script>
 </body>
 </html>

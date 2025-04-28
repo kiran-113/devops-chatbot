@@ -1,0 +1,33 @@
+.
+├── api
+│   └── devops.js
+├── Dockerfile
+├── package.json
+├── package-lock.json
+├── public
+│   ├── chat_bot.ico
+│   ├── images
+│   │   ├── logo_intelliswift12.png
+│   │   ├── logo_intelliswift.png
+│   │   └── logo.png
+│   ├── index.html
+│   └── index.html.bkp
+├── README.md
+├── src
+│   ├── app.js
+│   ├── config
+│   │   └── index.js
+│   ├── controllers
+│   │   └── chatbot.controller.js
+│   ├── server.js
+│   ├── services
+│   │   ├── gemini.service.js
+│   │   └── validation.service.js
+│   └── utils
+│       ├── response.util.js
+│       └── validation.js
+├── tests
+│   └── chatbot.test.js
+└── tree.txt
+
+10 directories, 21 files
