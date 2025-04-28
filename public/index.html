@@ -45,8 +45,8 @@
     #send-btn svg { display: block; transition: transform 0.15s;}
     #send-btn:active svg, #send-btn:focus svg { transform: scale(1.13); filter: brightness(1.2);}
     #send-btn[disabled] { opacity: 0.4; pointer-events: none;}
-    .clear-btn { margin-top:10px;float:right;display:inline-block; background: #f2f2f2; border-radius: 4px; border: 1px solid #999; font-size: 1rem; color: #444; padding: 4px 14px; cursor: pointer;}
-    .clear-btn:hover { background: #e0e0e0; }
+    .clear-btn { margin-top:10px;float:right;display:inline-block; background: #e40606; border-radius: 4px; border: 1px solid #f7f3f3; font-size: 1rem; color: #f4f1f1; padding: 4px 14px; cursor: pointer;}
+    .clear-btn:hover { background: #9a0202; }
     @media (max-width: 600px) {
       .company-name { font-size: 2rem;}
       .top-logo { height: 70px;}
@@ -186,12 +186,16 @@
 
     // Optional: "Clear Chat" button (resets conversation but not page)
     document.getElementById("clear-btn").addEventListener("click", function() {
-      chatMessages = [];
-      document.getElementById("chat-history").innerHTML = "";
-      document.getElementById("prompt").value = "";
-      document.getElementById("prompt").focus();
-      console.log("[Frontend] Chat cleared.");
-    });
+  if (confirm("Are you sure you want to clear the chat history?")) {
+    chatMessages = [];
+    document.getElementById("chat-history").innerHTML = "";
+    document.getElementById("prompt").value = "";
+    document.getElementById("prompt").focus();
+    console.log("[Frontend] Chat cleared.");
+  } else {
+    console.log("[Frontend] Chat clear cancelled by user.");
+  }
+});
   </script>
 </body>
 </html>
