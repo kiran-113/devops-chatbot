@@ -1,8 +1,11 @@
+// api/devops.js
 const express = require('express');
-const router = express.Router();
 const geminiService = require('../src/services/gemini.service');
+const app = express();
 
-router.post('/', async (req, res) => {
+app.use(express.json());
+
+app.post('/', async (req, res) => {
     const { prompt, history } = req.body;
     if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
         return res.status(400).json({ success: false, error: "Prompt is required." });
@@ -23,4 +26,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = app;
+// (Optional health check)
+app.get('/', (req, res) => res.json({ success: true, message: "DevOps API ready" }));
+
+module.exports = app; // <-- NOW app is defined!
