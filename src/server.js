@@ -1,34 +1,33 @@
+// src/server.js
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
 const devopsRoute = require('../api/devops');
 
 const app = express();
 
-app.use(bodyParser.json());
+// Body parser (Express 4.16+ has built-in json body parsing)
+app.use(express.json());
 
-// 👇 Serve static files from public/
+// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// API route
+// Mount DevOps API route (all /api/devops requests go to ../api/devops.js)
 app.use('/api/devops', devopsRoute);
 
-// Optionally, keep (or remove) this health check
-app.get('/api/devops', (req, res) => res.json({ success: true, message: "DevOps API ready" }));
+// (Optional) Health check endpoint for API
+app.get('/api/devops-health', (req, res) => res.json({ success: true, message: "DevOps API ready" }));
 
-// Optionally, remove this "Server is running!" route, as your index.html will be served at /
-// app.get('/', (req, res) => res.send("Server is running!"));
-
-// 👇 NEW: For any other route, serve public/index.html (for SPAs: React, etc.)
+// Single-page app: For everything else, serve index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Start server
+// Start server if not in a test environment
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
 // const express = require('express');
