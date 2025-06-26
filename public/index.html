@@ -4,390 +4,264 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DevOps Chatbot</title>
-    <link rel="icon" type="image/x-icon" href="/chat_bot.ico" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="/public/chat_bot.ico" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #5e72e4;
-            --primary-light: #7e8ef1;
-            --secondary: #2dce89;
-            --accent: #f5365c;
-            --dark: #172b4d;
-            --light: #f7fafc;
-            --code-bg: #edf2f7;
-            --ash: #525252; /* Thick ash color */
-        }
+        /* Custom font */
         body {
-            font-family: 'Roboto Slab', serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            background-color: var(--ash);
-            color: var(--light);
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Center items vertically */
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
         }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            padding: 2rem 1rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--ash);
-            /* Initially center the input area */
-            justify-content: center;
-            align-items: stretch;
-            min-height: auto; /* Adjust min-height */
-        }
-        .header-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 3px solid rgba(247, 250, 252, 0.2); /* Light border for contrast */
-        }
-        .top-logo {
-            height: 60px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-            transition: transform 0.3s ease;
-        }
-        .top-logo:hover { transform: scale(1.05);}
-        .chatbot-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .logo {
-            height: 30px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-        .company-name {
-            font-style: italic;
-            font-weight: 850;
-            color: var(--light);
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 2.5rem;
-            margin: 0;
-        }
+
+        /* Custom glow animation for the title */
         .glow {
-            animation: glow 2s ease-in-out infinite alternate;
+            animation: vibrant-glow 2s ease-in-out infinite alternate;
         }
-        @keyframes glow {
-            from { text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);}
-            to { text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);}
+
+        @keyframes vibrant-glow {
+            from { text-shadow: 0 0 5px rgba(102, 126, 234, 0.7);}
+            to { text-shadow: 0 0 15px rgba(102, 126, 234, 0.9), 0 0 25px rgba(102, 126, 234, 0.5); }
         }
-        .description {
-            font-size: 1.1rem;
-            font-weight: 500;
-            font-style: italic;
-            line-height: 1.6;
-            margin-bottom: 1.2rem;
-            color: var(--light);
+
+        /* Custom scrollbar for a better look */
+        #chat-history::-webkit-scrollbar {
+            width: 8px;
         }
-        #chat-history {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            background-color: #404040; /* Slightly lighter ash for contrast */
-            border-radius: 8px;
-            border: 1px solid #696969; /* Even lighter border */
-            padding: 15px 10px;
-            min-height: 0; /* Initially hidden */
-            max-height: 60vh;
-            color: var(--light);
-            display: none; /* Initially hidden */
+        #chat-history::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
         }
-        .chat-bubble { margin: 8px 0; text-align: left;}
-        .chat-bubble.user { color: #a7d129;} /* Green for user */
-        .chat-bubble.bot { color: #89bdd3;} /* Light blue for bot */
-        .chat-bubble.loading { color: #ccc; font-style: italic;}
-        pre, code { font-family: Menlo, Consolas, monospace; color: var(--light);}
-        pre {
-            background: #333; /* Darker background for code */
-            padding: 15px;
-            border: 1px solid #555;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            text-align: left;
-            margin-top: 6px;
-            margin-bottom: 0;
+        #chat-history::-webkit-scrollbar-thumb {
+            background: #c0c8f0;
+            border-radius: 10px;
         }
-        .error {
-            color: #ff6b6b; /* Red for error */
-            font-weight: bold;
-            font-style: italic;
-            margin-top: 10px;
-            font-size: 1.1rem;
-            text-align: center;
+        #chat-history::-webkit-scrollbar-thumb:hover {
+            background: #aab5e8;
         }
-        .input-area {
-            margin-top: 2rem;
-            position: relative;
-            display: flex;
-            flex-direction: column; /* Stack input and clear button */
-            align-items: stretch; /* Make input and button full width */
-        }
-        .send-box {
-            position: relative;
-            width: 100%;
-            display: flex;
-        }
-        #prompt {
-            width: 100%;
-            height: 70px;
-            padding: 12px 40px 12px 12px;
-            font-size: 16px;
-            border: 1px solid #696969;
-            border-radius: 8px;
-            resize: none;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            box-sizing: border-box;
-            background-color: #404040; /* Thick ash color for input */
-            color: var(--light);
-            transition: border 0.2s;
-        }
-        #prompt:focus {
-            outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 4px rgba(94, 114, 228, 0.20);
-        }
-        #send-btn {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            outline: none;
-        }
-        #send-btn svg {
-            display: block;
-            transition: transform 0.15s;
-        }
-        #send-btn:active svg, #send-btn:focus svg {
-            transform: scale(1.13);
-            filter: brightness(1.2);
-        }
-        #send-btn[disabled] {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-        /* Clear Chat Button Styles */
-        .clear-btn-row {
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 10px; /* Add some space between input and button */
-        }
-        .clear-btn {
-            background: #8b0000; /* Dark red for clear button */
-            border-radius: 4px;
-            border: 1px solid #a9a9a9;
-            font-size: 1rem;
-            color: var(--light);
-            padding: 4px 14px;
-            cursor: pointer;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-        .clear-btn:hover { background: #660000; }
-        @media (max-width: 600px) {
-            .company-name { font-size: 2rem;}
-            .top-logo { height: 70px;}
-            .logo { height: 30px;}
-            .container { padding: 1rem 0.4rem;}
-            #prompt { height: 50px;}
-            #chat-history { min-height: 0; max-height: 38vh;} /* Initially hidden */
-        }
+
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header-container">
-            <img src="/images/logo_intelliswift.png" alt="Company Logo" class="top-logo">
-            <div class="chatbot-header">
-                <img src="/images/logo.png" alt="Chatbot Logo" class="logo">
-                <h1 class="glow company-name">Chatbot</h1>
-            </div>
-        </div>
-        <div id="chat-history"></div>
+<body class="bg-gradient-to-br from-indigo-100 to-green-100 flex justify-center items-stretch min-h-screen text-gray-800">
 
-        <div class="input-area" id="input-area">
-            <div class="send-box">
-                <textarea id="prompt" placeholder="Ask me any DevOps-related question or request code configurations (e.g., Terraform, Kubernetes YAML, Bash scripts)."></textarea>
-                <button id="send-btn" aria-label="Send message" type="button">
-                    <svg viewBox="0 0 16 16" width="22" height="22" fill="#5e72e4" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="3,14 13,8 3,2" />
-                    </svg>
+    <div class="container w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col justify-between h-screen">
+        <!-- Header Section -->
+        <header class="pb-8 border-b-4 border-indigo-500/20">
+             <div class="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+                <img src="/images/logo_intelliswift.png" alt="Company Logo" class="h-16 w-auto object-contain rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+                <div class="flex items-center gap-3">
+                    <img src="/images/logo.png" alt="Chatbot Logo" class="h-10 w-auto rounded-full shadow-lg">
+                    <h1 class="glow text-1xl sm:text-4xl font-bold text-indigo-800 tracking-tight" style="font-style: italic;">DevOps Chatbot</h1>
+                </div>
+            </div>
+             <p class="text-center text-gray-600 mt-4 text-lg italic">Your AI-powered assistant for all things DevOps.</p>
+        </header>
+
+        <!-- Chat History (hidden initially) -->
+        <main id="chat-history" class="flex-1 overflow-y-auto my-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-inner border border-gray-200/50 min-h-[200px] h-full hidden">
+            <!-- Chat bubbles will be appended here -->
+        </main>
+
+        <!-- Spacer to push input to bottom when chat is hidden -->
+        <div id="spacer" class="flex-1"></div>
+
+        <!-- Input Area -->
+        <footer class="mt-auto">
+            <div class="relative">
+                <!-- NOTE: No <form> tag! -->
+                <textarea id="prompt" placeholder="Ask a question or request a script (e.g., Terraform, Kubernetes, Bash)..." class="w-full h-20 p-4 pr-28 text-base text-gray-700 bg-white rounded-xl shadow-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:outline-none resize-none transition duration-300"></textarea>
+                <button id="send-btn" aria-label="Send message" type="button" class="absolute right-4 bottom-4 bg-indigo-800 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 active:scale-100">
+                    Send
                 </button>
             </div>
-            <div class="clear-btn-row">
-                <button id="clear-btn" class="clear-btn">Clear Chat</button>
+            <!-- Clear Chat button (container is hidden initially) -->
+            <div id="clear-btn-container" class="text-left mt-3 hidden">
+                 <button id="clear-btn" class="bg-red-500 text-white py-1.5 px-4 text-sm rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300 transform hover:scale-105">Clear Chat</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal for confirmation -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl text-center max-w-sm w-full">
+            <p id="modal-text" class="text-lg mb-6">Are you sure you want to clear the chat?</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-yes" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">Yes</button>
+                <button id="confirm-no" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition">No</button>
             </div>
         </div>
     </div>
+
     <script>
-        const bodyEl = document.body;
-        const containerEl = document.querySelector('.container');
-        const chatHistoryEl = document.getElementById("chat-history");
-        const inputAreaEl = document.getElementById("input-area");
+        // --- DOM Elements ---
         const promptEl = document.getElementById("prompt");
-        let chatMessages = [];
-        let chatHistoryVisible = false; // Track if chat history is visible
-
-        // Initially hide the chat history
-        chatHistoryEl.style.display = 'none';
-
-        function moveToBottom() {
-        bodyEl.style.alignItems = 'stretch';
-        containerEl.style.justifyContent = 'space-between';
-        containerEl.style.minHeight = '100vh';
-        }
-
-        function showChatHistory() {
-        chatHistoryEl.style.display = 'block';
-        chatHistoryEl.style.minHeight = '180px';
-        chatHistoryVisible = true; // Mark chat history as visible
-        moveToBottom(); // Ensure the layout shifts when history appears
-        }
-
-        // Remove the focus and input listeners that trigger moveToBottom
-        // promptEl.addEventListener('focus', moveToBottom);
-        // promptEl.addEventListener('input', moveToBottom);
-
-        // 2. Chat sending logic
-        async function sendRequest() {
+        const chatHistoryEl = document.getElementById("chat-history");
         const sendBtn = document.getElementById("send-btn");
-        const prompt = promptEl.value.trim();
-        if (!prompt) {
-        chatHistoryEl.innerHTML += "<p class='error'>Please enter your query!</p>";
-        console.log("[Frontend] No prompt entered.");
-        showChatHistory();
-        return;
-        }
+        const clearBtnContainer = document.getElementById("clear-btn-container");
+        const clearBtn = document.getElementById("clear-btn");
+        const confirmationModal = document.getElementById("confirmation-modal");
+        const confirmYesBtn = document.getElementById("confirm-yes");
+        const confirmNoBtn = document.getElementById("confirm-no");
+        const spacer = document.getElementById("spacer");
 
-        // Show the chat history container and move to bottom on the *first* valid prompt
-        if (!chatHistoryVisible) {
-        showChatHistory();
-        }
+        // --- State ---
+        let chatMessages = [];
 
-        // 3. Add user message to chatMessages array
-        chatMessages.push({ role: "user", content: prompt });
-        console.log("[Frontend] User message pushed:", { role: "user", content: prompt });
-
-        // 4. Render user message and show loading bubble
-        chatHistoryEl.innerHTML += `
-        <div class="chat-bubble user"><strong>You:</strong> ${escapeHTML(prompt)}</div>
-        <div class="chat-bubble bot loading"><em>Hang tight! Getting response…</em></div>
-        `;
-        chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
-        sendBtn.disabled = true;
-        promptEl.disabled = true;
-
-        try {
-        // 5. Prepare the request payload with full running history
-        const payload = {
-        prompt,
-        history: chatMessages.slice(0, -1) // exclude current user prompt (Gemini expects new prompt as last turn)
-        };
-        console.log("[Frontend] Sending to backend:", payload);
-
-        const res = await fetch("/api/devops", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        });
-        const result = await res.json();
-
-        // Remove loading indicator
-        const bubbles = chatHistoryEl.querySelectorAll('.loading');
-        if (bubbles.length) bubbles[bubbles.length - 1].remove();
-
-        if (result.success) {
-        let text = result.data.response || '';
-        // Format bold Markdown (expand for more formats if needed)
-        text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-        chatHistoryEl.innerHTML += `<div class="chat-bubble bot"><pre>${text}</pre></div>`;
-        // 6. Add Gemini's reply to chatMessages
-        chatMessages.push({ role: "model", content: text });
-        console.log("[Frontend] Bot reply pushed:", { role: "model", content: text });
-        } else {
-        chatHistoryEl.innerHTML += `<p class="error">Error: ${
-        result.error || "Unknown error."
-        }</p>`;
-        console.error("[Frontend] API error:", result.error);
-        }
-        } catch (err) {
-        const bubbles = chatHistoryEl.querySelectorAll('.loading');
-        if (bubbles.length) bubbles[bubbles.length - 1].remove();
-        chatHistoryEl.innerHTML += `<p class="error">An error occurred: ${err.message}</p>`;
-        console.error("[Frontend] Exception caught:", err);
-        }
-        promptEl.value = "";
-        promptEl.disabled = false;
-        sendBtn.disabled = false;
-        promptEl.focus();
-        chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
-
-        // Debug: Print the running history
-        console.log("[Frontend] chatMessages so far:", JSON.parse(JSON.stringify(chatMessages)));
-        }
+        // --- Functions ---
 
         // XSS protection
         function escapeHTML(str) {
-        return str.replace(/[&<>"']/g, function(m) {
-        return ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-        })[m];
-        });
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
         }
 
-        // Button handler: send
-        document.getElementById("send-btn").addEventListener("click", sendRequest);
+        // Renders the entire chat history from the `chatMessages` array
+        function renderChatHistory() {
+            chatHistoryEl.innerHTML = ''; // Clear existing content
+            chatMessages.forEach(msg => {
+                let formattedContent = escapeHTML(msg.content);
+                // Basic markdown for bold and code blocks
+                formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-        // Prevent Enter from reloading page, allow Shift+Enter for newline
+                let bubbleHtml;
+                if (msg.role === 'user') {
+                    bubbleHtml = `
+                        <div class="flex justify-end mb-3">
+                            <div class="bg-indigo-900 text-white rounded-l-2xl rounded-tr-2xl p-4 max-w-lg shadow-md">
+                                ${formattedContent}
+                            </div>
+                        </div>
+                    `;
+                } else { // 'model' or 'bot'
+                    bubbleHtml = `
+                        <div class="flex justify-start mb-3">
+                            <div class="bg-gray-200 text-gray-800 rounded-r-2xl rounded-tl-2xl p-2 w-auto max-w-[90%] shadow-md">
+                                <pre class="bg-gray-800 text-white p-3 rounded-lg whitespace-pre-wrap font-mono text-sm">${formattedContent}</pre>
+                            </div>
+                        </div>
+                    `;
+                }
+                chatHistoryEl.innerHTML += bubbleHtml;
+            });
+            chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight; // Scroll to bottom
+        }
+
+        // Handles the request sending logic
+        async function sendRequest() {
+            const prompt = promptEl.value.trim();
+            if (!prompt) return;
+
+            // Show chat history and clear button on first message
+            if (chatHistoryEl.classList.contains('hidden')) {
+                chatHistoryEl.classList.remove('hidden');
+                clearBtnContainer.classList.remove('hidden');
+                spacer.classList.add('hidden'); // Hide spacer
+            }
+
+            // Add user message to state and render
+            chatMessages.push({ role: "user", content: prompt });
+            renderChatHistory(); // Render the user's message immediately
+
+            // Show loading indicator
+            const loadingBubble = `
+                <div id="loading-bubble" class="flex justify-start mb-3">
+                    <div class="bg-gray-200 text-gray-800 rounded-r-2xl rounded-tl-2xl p-4 max-w-lg shadow-md">
+                        <div class="flex items-center gap-2">
+                           <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+                           <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                           <div class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatHistoryEl.innerHTML += loadingBubble;
+            chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+
+            // Disable form
+            sendBtn.disabled = true;
+            promptEl.disabled = true;
+            promptEl.value = ""; // Clear input after sending
+
+            try {
+                // Prepare payload
+                const payload = {
+                    prompt,
+                    history: chatMessages.slice(0, -1)
+                };
+                console.log("[Frontend] Sending to backend:", payload);
+
+                const res = await fetch("/api/devops", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Server responded with status: ${res.status}`);
+                }
+
+                const result = await res.json();
+
+                if (result.success && result.data.response) {
+                    chatMessages.push({ role: "model", content: result.data.response });
+                } else {
+                    const errorMessage = result.error || "An unknown error occurred.";
+                    chatMessages.push({ role: "model", content: `Error: ${errorMessage}` });
+                    console.error("[Frontend] API error:", errorMessage);
+                }
+
+            } catch (err) {
+                const errorMessage = err.message || "Failed to fetch response.";
+                chatMessages.push({ role: "model", content: `Error: ${errorMessage}` });
+                console.error("[Frontend] Exception caught:", err);
+            } finally {
+                const loadingEl = document.getElementById('loading-bubble');
+                if (loadingEl) loadingEl.remove();
+
+                renderChatHistory();
+                promptEl.disabled = false;
+                sendBtn.disabled = false;
+                promptEl.focus();
+
+                console.log("[Frontend] chatMessages so far:", JSON.parse(JSON.stringify(chatMessages)));
+            }
+        }
+
+        // --- Event Listeners ---
+        sendBtn.addEventListener("click", sendRequest);
+
         promptEl.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendRequest();
-        }
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendRequest();
+            }
         });
 
-        // Optional: "Clear Chat" button (resets conversation but not page)
-        document.getElementById("clear-btn").addEventListener("click", function() {
-        if (confirm("Are you sure you want to clear the chat history?")) {
-        chatMessages = [];
-        document.getElementById("chat-history").innerHTML = "";
-        document.getElementById("chat-history").style.display = 'none';
-        document.getElementById("prompt").value = "";
-        document.getElementById("prompt").focus();
-        chatHistoryVisible = false; // Reset the visibility flag
-        // Optionally move back to center
-        bodyEl.style.alignItems = 'center';
-        containerEl.style.justifyContent = 'center';
-        containerEl.style.minHeight = 'auto';
-        console.log("[Frontend] Chat cleared.");
-        } else {
-        console.log("[Frontend] Chat clear cancelled by user.");
-        }
+        clearBtn.addEventListener("click", () => {
+            confirmationModal.classList.remove('hidden');
         });
-        </script>
+
+        confirmNoBtn.addEventListener("click", () => {
+            confirmationModal.classList.add('hidden');
+        });
+
+        confirmYesBtn.addEventListener("click", () => {
+            chatMessages = [];
+            renderChatHistory();
+
+            // Reset to initial state
+            chatHistoryEl.classList.add('hidden');
+            clearBtnContainer.classList.add('hidden');
+            spacer.classList.remove('hidden'); // Show spacer again
+
+            confirmationModal.classList.add('hidden');
+            promptEl.focus();
+            console.log("[Frontend] Chat cleared.");
+        });
+
+    </script>
 </body>
 </html>
